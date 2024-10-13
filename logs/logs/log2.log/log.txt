@@ -1,0 +1,30 @@
+
+:=========== Few-shot Seg. with VRP-SAM ===========
+|             datapath: ../Datasets_HSN/        
+|            benchmark: pascal                  
+|              logpath: logs/log2               
+|                  bsz: 2                       
+|                   lr: 0.0001                  
+|         weight_decay: 1e-06                   
+|               epochs: 50                      
+|              nworker: 8                       
+|                 seed: 321                     
+|                 fold: 1                       
+|            condition: mask                    
+|           use_ignore: True                    
+|           local_rank: 0                       
+|            num_query: 50                      
+|             backbone: resnet50                
+:==================================================
+
+Backbone # param.: 23685367
+Learnable # param.: 1592064
+Total # param.: 25277431
+[Epoch: 00] [Batch: 0001/1863] L: 2.09192  Avg L: 2.09192  mIoU:  0.03  |  FB-IoU: 26.94
+[Epoch: 00] [Batch: 0051/1863] L: 1.29169  Avg L: 1.35693  mIoU: 27.19  |  FB-IoU: 44.25
+[Epoch: 00] [Batch: 0101/1863] L: 0.38161  Avg L: 1.17315  mIoU: 31.03  |  FB-IoU: 51.63
+[Epoch: 00] [Batch: 0151/1863] L: 0.76560  Avg L: 1.06235  mIoU: 35.19  |  FB-IoU: 56.14
+[Epoch: 00] [Batch: 0201/1863] L: 0.65735  Avg L: 0.98532  mIoU: 39.38  |  FB-IoU: 58.88
+[Epoch: 00] [Batch: 0251/1863] L: 0.96698  Avg L: 0.93656  mIoU: 42.09  |  FB-IoU: 61.44
+[Epoch: 00] [Batch: 0301/1863] L: 1.06983  Avg L: 0.90101  mIoU: 44.38  |  FB-IoU: 63.22
+[Epoch: 00] [Batch: 0351/1863] L: 0.41428  Avg L: 0.86831  mIoU: 45.29  |  FB-IoU: 64.48

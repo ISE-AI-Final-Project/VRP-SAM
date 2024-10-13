@@ -1,0 +1,40 @@
+
+:=========== Few-shot Seg. with VRP-SAM ===========
+|             datapath: ../Datasets_HSN/        
+|            benchmark: pascal                  
+|              logpath: logs/log1.log           
+|                  bsz: 2                       
+|                   lr: 0.0001                  
+|         weight_decay: 1e-06                   
+|               epochs: 50                      
+|              nworker: 8                       
+|                 seed: 321                     
+|                 fold: 1                       
+|            condition: mask                    
+|           use_ignore: True                    
+|           local_rank: 0                       
+|            num_query: 50                      
+|             backbone: resnet50                
+:==================================================
+
+Backbone # param.: 23685367
+Learnable # param.: 1592064
+Total # param.: 25277431
+[Epoch: 00] [Batch: 0001/1863] L: 2.09192  Avg L: 2.09192  mIoU:  0.03  |  FB-IoU: 26.94
+[Epoch: 00] [Batch: 0051/1863] L: 1.28932  Avg L: 1.35670  mIoU: 27.26  |  FB-IoU: 44.30
+[Epoch: 00] [Batch: 0101/1863] L: 0.38532  Avg L: 1.17328  mIoU: 31.07  |  FB-IoU: 51.66
+[Epoch: 00] [Batch: 0151/1863] L: 0.76439  Avg L: 1.06214  mIoU: 35.21  |  FB-IoU: 56.19
+[Epoch: 00] [Batch: 0201/1863] L: 0.65500  Avg L: 0.98475  mIoU: 39.45  |  FB-IoU: 58.99
+[Epoch: 00] [Batch: 0251/1863] L: 1.06036  Avg L: 0.93803  mIoU: 41.93  |  FB-IoU: 61.41
+[Epoch: 00] [Batch: 0301/1863] L: 1.08859  Avg L: 0.90423  mIoU: 44.08  |  FB-IoU: 63.04
+[Epoch: 00] [Batch: 0351/1863] L: 0.27492  Avg L: 0.87879  mIoU: 44.78  |  FB-IoU: 64.23
+[Epoch: 00] [Batch: 0401/1863] L: 1.02542  Avg L: 0.85440  mIoU: 46.05  |  FB-IoU: 65.20
+[Epoch: 00] [Batch: 0451/1863] L: 0.28131  Avg L: 0.83441  mIoU: 46.39  |  FB-IoU: 65.84
+[Epoch: 00] [Batch: 0501/1863] L: 0.53446  Avg L: 0.80904  mIoU: 47.43  |  FB-IoU: 67.00
+[Epoch: 00] [Batch: 0551/1863] L: 1.24583  Avg L: 0.80406  mIoU: 46.99  |  FB-IoU: 67.05
+[Epoch: 00] [Batch: 0601/1863] L: 0.44414  Avg L: 0.79224  mIoU: 48.07  |  FB-IoU: 67.57
+[Epoch: 00] [Batch: 0651/1863] L: 1.12648  Avg L: 0.77375  mIoU: 49.13  |  FB-IoU: 68.24
+[Epoch: 00] [Batch: 0701/1863] L: 0.61640  Avg L: 0.75964  mIoU: 49.44  |  FB-IoU: 68.94
+[Epoch: 00] [Batch: 0751/1863] L: 0.52242  Avg L: 0.75617  mIoU: 49.63  |  FB-IoU: 69.15
+[Epoch: 00] [Batch: 0801/1863] L: 0.53927  Avg L: 0.74369  mIoU: 50.85  |  FB-IoU: 69.73
+[Epoch: 00] [Batch: 0851/1863] L: 0.31867  Avg L: 0.73585  mIoU: 50.88  |  FB-IoU: 70.08

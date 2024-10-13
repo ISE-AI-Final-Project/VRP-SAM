@@ -1,0 +1,12 @@
+torchrun --nproc_per_node=1 train.py \
+        --datapath ../Datasets_HSN/\
+        --logpath logs/log1 \
+        --benchmark pascal \
+        --backbone resnet50 \
+        --fold 1 \
+        --condition mask \
+        --num_query 50 \
+        --epochs 50 \
+        --lr 1e-4 \
+        --bsz 2 \
+        --local_rank 0
