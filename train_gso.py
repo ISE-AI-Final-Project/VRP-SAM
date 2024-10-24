@@ -29,7 +29,7 @@ def train_nshot(
     for idx, batch in enumerate(dataloader):
 
         batch = utils.to_cuda(batch)
-        protos = model.moule.forward_nshot(
+        protos = model.module.forward_nshot(
             args.condition,
             batch["query_img"],
             batch["support_imgs"],
@@ -119,6 +119,12 @@ if __name__ == "__main__":
         default="resnet50",
         choices=["vgg16", "resnet50", "resnet101"],
     )
+
+    parser.add_argument(
+        "--nshot",
+        type=int,
+        default=14,
+    )
     args = parser.parse_args()
     # Distributed setting
 
@@ -179,7 +185,7 @@ if __name__ == "__main__":
         img_size=512, datapath=args.datapath, use_original_imgsize=False
     )
     dataloader_trn = FSSDataset.build_dataloader(
-        args.benchmark, args.bsz, args.nworker, args.fold, "trn"
+        args.benchmark, args.bsz, args.nworker, args.fold, "trn", shot=args.nshot
     )
 
     # dataloader_val = FSSDataset.build_dataloader(
@@ -203,6 +209,7 @@ if __name__ == "__main__":
             optimizer,
             scheduler,
             training=True,
+            nshot=args.nshot,
         )
         # with torch.no_grad():
         #     val_loss, val_miou, val_fb_iou = train_nshot(

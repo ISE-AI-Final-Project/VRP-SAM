@@ -1,4 +1,4 @@
-torchrun --nproc_per_node=1 train_gso.py \
+torchrun --nproc_per_node=2 train_gso.py \
         --datapath ../\
         --logpath train_gso \
         --benchmark gso \
@@ -9,4 +9,5 @@ torchrun --nproc_per_node=1 train_gso.py \
         --epochs 50 \
         --lr 1e-4 \
         --bsz 16 \
-        --local_rank 0
+        --local_rank 0 \
+        --nshot 14
