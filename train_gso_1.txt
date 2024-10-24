@@ -1,0 +1,12 @@
+torchrun --nproc_per_node=1 train_gso.py \
+        --datapath ../\
+        --logpath train_gso \
+        --benchmark gso \
+        --backbone resnet50 \
+        --fold 0 \
+        --condition mask \
+        --num_query 50 \
+        --epochs 50 \
+        --lr 1e-4 \
+        --bsz 16 \
+        --local_rank 0

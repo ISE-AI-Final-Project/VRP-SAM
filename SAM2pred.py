@@ -29,29 +29,39 @@ class SAM_pred(nn.Module):
             query_feats = self.sam_model.image_encoder(query_img)
         return query_feats
 
-    def get_feat_from_np(self, query_img, query_name, protos):
-        np_feat_path = "feats_np/coco/"
-        if not os.path.exists(np_feat_path):
-            os.makedirs(np_feat_path)
-        files_name = os.listdir(np_feat_path)
-        query_feat_list = []
-        for idx, name in enumerate(query_name):
-            if "/root" in name:
-                name = os.path.splitext(name.split("/")[-1])[0]
+    def get_feat_from_np(self, query_img, query_name, protos, save_feat=False):
 
-            if name + ".npy" not in files_name:
+        query_feat_list = []
+
+        if not save_feat:
+            for idx, name in enumerate(query_name):
                 query_feats_np = self.forward_img_encoder(
                     query_img[idx, :, :, :].unsqueeze(0)
                 )
                 query_feat_list.append(query_feats_np)
-                query_feats_np = query_feats_np.detach().cpu().numpy()
-                np.save(np_feat_path + name + ".npy", query_feats_np)
-            else:
-                sub_query_feat = torch.from_numpy(
-                    np.load(np_feat_path + name + ".npy")
-                ).to(protos.device)
-                query_feat_list.append(sub_query_feat)
-                del sub_query_feat
+        else:
+            np_feat_path = "feats_np/coco/"
+            if not os.path.exists(np_feat_path):
+                os.makedirs(np_feat_path)
+            files_name = os.listdir(np_feat_path)
+
+            for idx, name in enumerate(query_name):
+                if "/root" in name:
+                    name = os.path.splitext(name.split("/")[-1])[0]
+
+                if name + ".npy" not in files_name:
+                    query_feats_np = self.forward_img_encoder(
+                        query_img[idx, :, :, :].unsqueeze(0)
+                    )
+                    query_feat_list.append(query_feats_np)
+                    query_feats_np = query_feats_np.detach().cpu().numpy()
+                    np.save(np_feat_path + name + ".npy", query_feats_np)
+                else:
+                    sub_query_feat = torch.from_numpy(
+                        np.load(np_feat_path + name + ".npy")
+                    ).to(protos.device)
+                    query_feat_list.append(sub_query_feat)
+                    del sub_query_feat
         query_feats_np = torch.cat(query_feat_list, dim=0)
         return query_feats_np
 
@@ -98,7 +108,7 @@ class SAM_pred(nn.Module):
         binary_mask = torch.where(low_masks > 0, 1, 0)
         return low_masks, binary_mask
 
-    def forward(self, query_img, query_name, protos, points_mask=None):
+    def forward(self, query_img, query_name, protos, points_mask=None, save_feat=False):
         B, C, h, w = query_img.shape
 
         # query_img = F.interpolate(query_img, (1024,1024), mode='bilinear', align_corners=True)
@@ -107,7 +117,9 @@ class SAM_pred(nn.Module):
             # -------------save_sam_img_feat-------------------------
             # query_feats = self.forward_img_encoder(query_img)
 
-            query_feats = self.get_feat_from_np(query_img, query_name, protos)
+            query_feats = self.get_feat_from_np(
+                query_img, query_name, protos, save_feat=save_feat
+            )
 
         q_sparse_em, q_dense_em = self.forward_prompt_encoder(
             points=point_prompt, boxes=None, protos=protos, masks=None

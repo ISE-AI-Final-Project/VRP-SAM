@@ -1,0 +1,12 @@
+torchrun --nproc_per_node=1 eval.py \
+        --datapath ../Datasets_HSN/\
+        --logpath pascal_f1_eval \
+        --benchmark pascal \
+        --backbone resnet50 \
+        --fold 1 \
+        --condition mask \
+        --num_query 50 \
+        --epochs 50 \
+        --lr 1e-4 \
+        --bsz 2 \
+        --local_rank 0
