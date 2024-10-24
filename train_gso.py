@@ -2,6 +2,7 @@ r""" Visual Prompt Encoder training (validation) code """
 
 import argparse
 import os
+import pdb
 
 import torch
 import torch.distributed as dist
@@ -22,6 +23,7 @@ def train_nshot(
 ):
     r"""Train VRP_encoder model"""
 
+    # pdb.set_trace()
     utils.fix_randseed(args.seed + epoch) if training else utils.fix_randseed(args.seed)
     model.module.train_mode() if training else model.module.eval()
     average_meter = AverageMeter(dataloader.dataset)
@@ -37,7 +39,6 @@ def train_nshot(
             training,
             nshot=nshot,
         )
-        print(batch["support_imgs"].shape, protos.shape)
 
         low_masks, pred_mask = sam_model(
             batch["query_img"], batch["query_name"], protos
@@ -53,6 +54,7 @@ def train_nshot(
             loss.backward()
             optimizer.step()
             scheduler.step()
+            # print(loss)
 
         area_inter, area_union = Evaluator.classify_prediction(
             pred_mask.squeeze(1), batch
@@ -75,9 +77,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Visual Prompt Encoder Pytorch Implementation"
     )
-    parser.add_argument(
-        "--datapath", type=str, default="/root/paddlejob/workspace/env_run/datsets/"
-    )
+    parser.add_argument("--datapath", type=str, default="ice")
     parser.add_argument(
         "--benchmark",
         type=str,
@@ -125,6 +125,19 @@ if __name__ == "__main__":
         type=int,
         default=14,
     )
+
+    parser.add_argument(
+        "--load_weight",
+        type=str,
+        default="",
+    )
+
+    parser.add_argument(
+        "--sam_weight",
+        type=str,
+        default="/home/icetenny/senior-1/segment-anything/model/sam_vit_h_4b8939.pth",
+    )
+
     args = parser.parse_args()
     # Distributed setting
 
@@ -179,6 +192,13 @@ if __name__ == "__main__":
         betas=(0.9, 0.999),
     )
     Evaluator.initialize(args)
+
+    # Load Weight
+    if os.path.exists(args.load_weight):
+        model.load_state_dict(torch.load(args.load_weight, map_location=device))
+        print(f"Model loaded from {args.load_weight}")
+    else:
+        print(f"No saved model found at {args.load_weight}")
 
     # Dataset initialization
     FSSDataset.initialize(

@@ -1,0 +1,25 @@
+
+:=========== Few-shot Seg. with VRP-SAM ===========
+|             datapath: ../                     
+|            benchmark: gso                     
+|              logpath: train_gso               
+|                  bsz: 1                       
+|                   lr: 0.0001                  
+|         weight_decay: 1e-06                   
+|               epochs: 50                      
+|              nworker: 8                       
+|                 seed: 321                     
+|                 fold: 0                       
+|            condition: mask                    
+|           use_ignore: True                    
+|           local_rank: 0                       
+|            num_query: 50                      
+|             backbone: resnet50                
+|                nshot: 2                       
+|          load_weight: logs/pascal_f1/best_model.pt
+:==================================================
+
+Backbone # param.: 23685367
+Learnable # param.: 1592064
+Total # param.: 25277431
+[1024_215918] [Epoch: 00] [Batch: 0001/44655] L: 0.82776  Avg L: 0.82776  mIoU:  0.04  |  FB-IoU: 58.56

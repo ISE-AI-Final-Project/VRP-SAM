@@ -426,7 +426,8 @@ class VRP_encoder(nn.Module):
     def compute_objective(self, logit_mask, gt_mask):
         bsz = logit_mask.size(0)
         loss_bce = self.bce_with_logits_loss(logit_mask.squeeze(1), gt_mask.float())
-        loss_dice = dice_loss(logit_mask, gt_mask, bsz)
+        loss_dice = dice_loss(logit_mask.squeeze(1), gt_mask, bsz)
+        # print(loss_dice, loss_bce)
         return loss_bce + loss_dice
 
     def train_mode(self):

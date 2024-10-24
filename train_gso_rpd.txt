@@ -1,5 +1,5 @@
-torchrun --nproc_per_node=1 train_gso.py \
-        --datapath ice
+torchrun --nproc_per_node=2 train_gso.py \
+        --datapath rpd
         --logpath train_gso \
         --benchmark gso \
         --backbone resnet50 \
@@ -8,8 +8,8 @@ torchrun --nproc_per_node=1 train_gso.py \
         --num_query 50 \
         --epochs 50 \
         --lr 1e-4 \
-        --bsz 1 \
+        --bsz 4 \
         --local_rank 0 \
-        --nshot 2 \
+        --nshot 14 \
         --load_weight logs/pascal_f1/best_model.pt \
-        --sam_weight /home/icetenny/senior-1/segment-anything/model/sam_vit_h_4b8939.pth \
+        --sam_weight /workspace/sam_vit_h_4b8939.pth \

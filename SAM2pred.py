@@ -13,11 +13,11 @@ from vrp_segment_anything.segment_anything import sam_model_registry
 class SAM_pred(nn.Module):
     def __init__(
         self,
+        model="vit_h",
+        weight="/home/icetenny/senior-1/segment-anything/model/sam_vit_h_4b8939.pth",
     ):
         super().__init__()
-        self.sam_model = sam_model_registry["vit_h"](
-            "/home/icetenny/senior-1/segment-anything/model/sam_vit_h_4b8939.pth"
-        )
+        self.sam_model = sam_model_registry[model](weight)
         self.sam_model.eval()
 
     def forward_img_encoder(self, query_img):

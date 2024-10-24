@@ -1,0 +1,38 @@
+
+:=========== Few-shot Seg. with VRP-SAM ===========
+|             datapath: ../                     
+|            benchmark: gso                     
+|              logpath: train_gso               
+|                  bsz: 1                       
+|                   lr: 0.0001                  
+|         weight_decay: 1e-06                   
+|               epochs: 50                      
+|              nworker: 8                       
+|                 seed: 321                     
+|                 fold: 0                       
+|            condition: mask                    
+|           use_ignore: True                    
+|           local_rank: 0                       
+|            num_query: 50                      
+|             backbone: resnet50                
+|                nshot: 2                       
+|          load_weight: logs/pascal_f1/best_model.pt
+:==================================================
+
+Backbone # param.: 23685367
+Learnable # param.: 1592064
+Total # param.: 25277431
+[10-24_22:00:46] [Epoch: 00] [Batch: 0001/44655] L: 0.82776  Avg L: 0.82776  mIoU:  0.04  |  FB-IoU: 58.56
+[10-24_22:02:10] [Epoch: 00] [Batch: 0051/44655] L: 1.50116  Avg L: 1.06616  mIoU:  0.91  |  FB-IoU: 53.14
+[10-24_22:03:35] [Epoch: 00] [Batch: 0101/44655] L: 0.96959  Avg L: 1.03259  mIoU:  1.90  |  FB-IoU: 53.99
+[10-24_22:04:59] [Epoch: 00] [Batch: 0151/44655] L: 1.20674  Avg L: 1.02467  mIoU:  2.88  |  FB-IoU: 54.73
+[10-24_22:06:24] [Epoch: 00] [Batch: 0201/44655] L: 1.34951  Avg L: 1.03789  mIoU:  3.34  |  FB-IoU: 54.46
+[10-24_22:07:48] [Epoch: 00] [Batch: 0251/44655] L: 0.73121  Avg L: 1.02153  mIoU:  4.36  |  FB-IoU: 54.72
+[10-24_22:09:12] [Epoch: 00] [Batch: 0301/44655] L: 0.32083  Avg L: 1.01693  mIoU:  5.00  |  FB-IoU: 54.93
+[10-24_22:10:37] [Epoch: 00] [Batch: 0351/44655] L: 1.34687  Avg L: 1.00622  mIoU:  5.82  |  FB-IoU: 55.64
+[10-24_22:12:01] [Epoch: 00] [Batch: 0401/44655] L: 1.66871  Avg L: 1.00485  mIoU:  6.02  |  FB-IoU: 55.88
+[10-24_22:13:26] [Epoch: 00] [Batch: 0451/44655] L: 0.95257  Avg L: 0.99815  mIoU:  6.80  |  FB-IoU: 56.34
+[10-24_22:14:50] [Epoch: 00] [Batch: 0501/44655] L: 0.48677  Avg L: 0.98537  mIoU:  7.65  |  FB-IoU: 57.38
+[10-24_22:16:14] [Epoch: 00] [Batch: 0551/44655] L: 1.03599  Avg L: 0.98283  mIoU:  7.90  |  FB-IoU: 57.20
+[10-24_22:17:39] [Epoch: 00] [Batch: 0601/44655] L: 1.04276  Avg L: 0.97659  mIoU:  8.44  |  FB-IoU: 57.28
+[10-24_22:19:04] [Epoch: 00] [Batch: 0651/44655] L: 1.27218  Avg L: 0.96885  mIoU:  8.84  |  FB-IoU: 57.48

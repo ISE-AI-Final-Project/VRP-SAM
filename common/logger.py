@@ -55,6 +55,7 @@ class AverageMeter:
         return miou, fb_iou
 
     def write_result(self, split, epoch):
+        logtime = datetime.datetime.now().__format__("%m-%d_%H:%M:%S")
         self.intersection_buf, self.union_buf = self.reduce_metrics(
             [self.intersection_buf, self.union_buf], False
         )
@@ -62,6 +63,7 @@ class AverageMeter:
 
         # loss_buf = torch.stack(self.loss_buf)
         msg = "\n*** %s " % split
+        msg += "[%s] " % logtime
         msg += "[@Epoch %02d] " % epoch if epoch != -1 else ""
         if epoch != -1:
             loss_buf = torch.stack(self.loss_buf)
@@ -75,7 +77,9 @@ class AverageMeter:
 
     def write_process(self, batch_idx, datalen, epoch, write_batch_idx=20):
         if batch_idx % write_batch_idx == 0:
-            msg = "[Epoch: %02d] " % epoch if epoch != -1 else ""
+            logtime = datetime.datetime.now().__format__("%m-%d_%H:%M:%S")
+            msg = "[%s] " % logtime
+            msg += "[Epoch: %02d] " % epoch if epoch != -1 else ""
             msg += "[Batch: %04d/%04d] " % (batch_idx + 1, datalen)
             iou, fb_iou = self.compute_iou()
             if epoch != -1:

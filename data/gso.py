@@ -17,18 +17,26 @@ class DatasetGSO(Dataset):
         self.split = "val" if split in ["val", "test"] else "trn"
         self.fold = fold
         self.nfolds = 1
-        self.class_ids = [1]  # [1, 2, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15]
+        self.class_ids = [i for i in range(944)]
         self.nclass = len(self.class_ids)
         self.benchmark = "gso"
         self.shot = shot
         self.use_original_imgsize = use_original_imgsize
 
-        self.rgb_path = "/home/icetenny/senior-1/Datasets_Megapose/Processed/rgb"
-        self.mask_path = "/home/icetenny/senior-1/Datasets_Megapose/Processed/mask"
-        self.template_path = (
-            "/home/icetenny/senior-1/SAM-6D/SAM-6D/Data/gso_obj/templates"
-        )
+        if datapath == "ice":
+            self.rgb_path = "/home/icetenny/senior-1/Datasets_Megapose/Processed/rgb"
+            self.mask_path = "/home/icetenny/senior-1/Datasets_Megapose/Processed/mask"
+            self.template_path = (
+                "/home/icetenny/senior-1/SAM-6D/SAM-6D/Data/gso_obj/templates"
+            )
+        elif datapath == "rpd":
+            self.rgb_path = "/workspace/Datasets_Megapose/Processed/rgb"
+            self.mask_path = "/workspace/Datasets_Megapose/Processed/mask"
+            self.template_path = "/workspace/Datasets_Megapose/gso_obj/templates"
+
         self.transform = transform
+
+        self.obj_list = []
 
         self.img_metadata = self.build_img_metadata()
         # self.img_metadata_classwise = self.build_img_metadata_classwise()
@@ -90,7 +98,7 @@ class DatasetGSO(Dataset):
             "support_masks": support_masks,
             "support_names": support_names,
             # "support_ignore_idxs": support_ignore_idxs,
-            # "class_id": torch.tensor(self.class_ids),
+            "class_id": self.get_class_id(query_name),
         }
 
         return batch
@@ -137,7 +145,7 @@ class DatasetGSO(Dataset):
                 np.all(image_array == [255, 255, 255], axis=-1).astype(np.uint8)
             )
         elif len(image_array.shape) == 2:
-            binary_mask = torch.tensor(image_array)
+            binary_mask = torch.tensor((image_array == 255).astype(np.uint8))
         else:
             raise ValueError("Unsupported image format")
 
@@ -147,17 +155,24 @@ class DatasetGSO(Dataset):
         r"""Return RGB image in PIL Image"""
         return Image.open(rgb_path)
 
+    def get_class_id(self, query_name):
+        obj_name = query_name.split("/")[0]
+        class_id = self.obj_list.index(obj_name)
+        return torch.tensor(class_id)
+
     def build_img_metadata(self):
         """
         return list of image_id
         """
 
         rgb_img_id = os.listdir(self.rgb_path)
-        mask_obj_folder = os.listdir(self.mask_path)
+        mask_obj_folder = sorted(os.listdir(self.mask_path))
 
         mask_img_ids = []
 
         for mask_obj_name in mask_obj_folder:
+            self.obj_list.append(mask_obj_name)
+
             obj_img_ids = os.listdir(os.path.join(self.mask_path, mask_obj_name))
 
             for obj_img_id in obj_img_ids:
