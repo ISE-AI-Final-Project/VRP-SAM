@@ -62,7 +62,7 @@ def train_nshot(
         average_meter.update(
             area_inter, area_union, batch["class_id"], loss.detach().clone()
         )
-        average_meter.write_process(idx, len(dataloader), epoch, write_batch_idx=50)
+        average_meter.write_process(idx, len(dataloader), epoch, write_batch_idx=200)
 
     average_meter.write_result("Training" if training else "Validation", epoch)
     avg_loss = utils.mean(average_meter.loss_buf)
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     if utils.is_main_process():
         Logger.log_params(model)
 
-    sam_model = SAM_pred()
+    sam_model = SAM_pred(model="vit_h", weight=args.sam_weight)
     sam_model.to(device)
     model.to(device)
     model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
