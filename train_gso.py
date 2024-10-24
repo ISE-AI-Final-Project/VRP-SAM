@@ -128,12 +128,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
     # Distributed setting
 
-    local_rank = dist.get_rank()
-
-    print(torch.cuda.device_count(), local_rank)
-    # local_rank = args.local_rank
     dist.init_process_group(backend="nccl")
-    print("local_rank: ", local_rank)
+
+    local_rank = dist.get_rank()
+    print("Num cuda", torch.cuda.device_count(), "Local Rank", local_rank)
+
+    # local_rank = args.local_rank
     torch.cuda.set_device(local_rank)
     device = torch.device("cuda", local_rank)
 
