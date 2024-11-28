@@ -6,6 +6,7 @@ from torchvision import transforms
 
 from data.coco import DatasetCOCO
 from data.gso import DatasetGSO
+from data.gso_detr import DatasetGSO_DETR
 from data.linemod import DatasetLINEMOD
 from data.pascal import DatasetPASCAL
 
@@ -23,6 +24,7 @@ class FSSDataset:
             # 'coco2pascal': DatasetCOCO2PASCAL,
             "linemod": DatasetLINEMOD,
             "gso": DatasetGSO,
+            "gso_detr": DatasetGSO_DETR,
         }
 
         cls.img_mean = [0.485, 0.456, 0.406]
@@ -63,13 +65,52 @@ class FSSDataset:
                 dataset, shuffle=shuffle
             )
             pin_memory = True
-        dataloader = DataLoader(
-            dataset,
-            batch_size=bsz,
-            shuffle=False,
-            pin_memory=True,
-            num_workers=nworker,
-            sampler=sampler,
-        )
+
+        if benchmark == "gso_detr":
+            # Custom collate fn for gso_detr
+
+            dataloader = DataLoader(
+                dataset,
+                batch_size=bsz,
+                shuffle=False,
+                pin_memory=True,
+                num_workers=nworker,
+                sampler=sampler,
+                collate_fn=cls.gso_detr_collate_fn,
+            )
+        else:
+            dataloader = DataLoader(
+                dataset,
+                batch_size=bsz,
+                shuffle=False,
+                pin_memory=True,
+                num_workers=nworker,
+                sampler=sampler,
+            )
 
         return dataloader
+
+    @staticmethod
+    def gso_detr_collate_fn(batch):
+        """
+        Custom collate function to handle variable-sized fields in a batch.
+
+        Args:
+            batch: List of dictionaries, where each dictionary represents a single data sample.
+
+        Returns:
+            dict: Batched data with images, annotations, and variable-sized fields handled properly.
+        """
+        # Initialize output dictionary
+        collated_batch = {
+            "query_img": torch.stack([item["query_img"] for item in batch]),
+            "query_name": [item["query_name"] for item in batch],
+            "org_query_imsize": [item["org_query_imsize"] for item in batch],
+            "support_imgs": torch.stack([item["support_imgs"] for item in batch]),
+            "support_masks": torch.stack([item["support_masks"] for item in batch]),
+            "support_names": [item["support_names"] for item in batch],
+            "unique_obj_id": [item["unique_obj_id"] for item in batch],
+            "bboxes": [item["bboxes"] for item in batch],
+        }
+
+        return collated_batch

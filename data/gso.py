@@ -23,16 +23,16 @@ class DatasetGSO(Dataset):
         self.shot = shot
         self.use_original_imgsize = use_original_imgsize
 
-        if datapath == "ice":
+        if datapath == "rpd":
+            self.rgb_path = "/workspace/Datasets_Megapose/Processed/rgb"
+            self.mask_path = "/workspace/Datasets_Megapose/Processed/mask"
+            self.template_path = "/workspace/Datasets_Megapose/gso_obj/templates"
+        else:
             self.rgb_path = "/home/icetenny/senior-1/Datasets_Megapose/Processed/rgb"
             self.mask_path = "/home/icetenny/senior-1/Datasets_Megapose/Processed/mask"
             self.template_path = (
                 "/home/icetenny/senior-1/SAM-6D/SAM-6D/Data/gso_obj/templates"
             )
-        elif datapath == "rpd":
-            self.rgb_path = "/workspace/Datasets_Megapose/Processed/rgb"
-            self.mask_path = "/workspace/Datasets_Megapose/Processed/mask"
-            self.template_path = "/workspace/Datasets_Megapose/gso_obj/templates"
 
         self.transform = transform
 

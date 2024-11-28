@@ -1,0 +1,15 @@
+torchrun --nproc_per_node=2 train_gso_detr.py \
+        --datapath rpd \
+        --logpath train_gso_detr \
+        --benchmark gso_detr \
+        --backbone resnet50 \
+        --fold 0 \
+        --condition mask \
+        --num_query 50 \
+        --epochs 300 \
+        --lr 1e-4 \
+        --bsz 4 \
+        --local_rank 0 \
+        --nshot 14 \
+        --no_aux_loss \
+        --sam_weight "/workspace/sam_vit_h_4b8939.pth" \

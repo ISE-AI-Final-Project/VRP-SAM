@@ -23,7 +23,9 @@ class DatasetLINEMOD(Dataset):
 
         self.rgb_path = "/home/icetenny/senior-1/Linemod_preprocessed/data/01/rgb"
         self.mask_path = "/home/icetenny/senior-1/Linemod_preprocessed/data/01/mask"
-        self.template_path = "/home/icetenny/senior-1/SAM-6D/SAM-6D/Data/linemod-ism-eval/templates/01/templates"
+        self.template_path = (
+            "/home/icetenny/senior-1/SAM-6D/SAM-6D/Data/vrp_lm/templates/obj_01"
+        )
         self.transform = transform
 
         self.img_metadata = self.build_img_metadata()
@@ -37,7 +39,7 @@ class DatasetLINEMOD(Dataset):
         # query_name, support_names, class_sample = self.sample_episode(idx)
 
         query_name = self.img_metadata[idx]
-        support_names = ["22.png"]
+        support_names = [f"{i}.png" for i in range(14)]
 
         query_img, query_cmask, support_imgs, support_cmasks, org_qry_imsize = (
             self.load_frame(query_name, support_names)
