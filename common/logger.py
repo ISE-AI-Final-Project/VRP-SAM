@@ -165,3 +165,10 @@ class Logger:
         Logger.info("Backbone # param.: %d" % backbone_param)
         Logger.info("Learnable # param.: %d" % learner_param)
         Logger.info("Total # param.: %d" % (backbone_param + learner_param))
+
+    @classmethod
+    def save_model(cls, model, epoch):
+        torch.save(
+            model.state_dict(), os.path.join(cls.logpath, f"model_ep{epoch+1}.pt")
+        )
+        cls.info("Model saved @%d w.\n" % (epoch))

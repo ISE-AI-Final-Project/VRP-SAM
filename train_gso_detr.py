@@ -223,6 +223,9 @@ def main(args):
                 f"[Finished EPOCH {epoch+1}/{args.epochs} | {total_epoch_time_str} s. : {train_stats}]\n{'='*40}\n"
             )
 
+            if epoch % 20 == 0:
+                Logger.save_model(model, epoch)
+
     if utils.is_main_process():
         Logger.tbd_writer.close()
         Logger.info("==================== Finished Training ====================")
