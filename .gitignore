@@ -2,3 +2,4 @@
 *.pth
 *.pt
 feats_np*
+checkpoints/*
